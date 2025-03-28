@@ -3,9 +3,11 @@ name: Github Actions
 on:
   push:
     branches: [ "main" ]
+
+IMAGE_NAME: epscavalcante/nest-example
     
 jobs:
-  build:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,4 +17,22 @@ jobs:
       - run: npm ci
       - run: npm run test
       - run: npm run test:e2e
+
+  package:
+    name: Package application
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Build & Push docker image
+        uses: docker/build-push-action@v3
+        with:
+          file: ./Dockerfile.prod
+          push: true
+          tags: ${{ env.IMAGE_NAME }}:${{ github.sha }}, ${{ env.IMAGE_NAME }}:latest
   
