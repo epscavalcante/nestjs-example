@@ -3,8 +3,8 @@ name: Github Actions
 on:
   push:
     branches: [ "main" ]
-
-IMAGE_NAME: epscavalcante/nest-example
+env:
+  IMAGE_NAME: epscavalcante/nest-example
     
 jobs:
   setup:
