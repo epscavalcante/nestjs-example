@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
 env:
-  IMAGE_NAME: epscavalcante/nest-example
+  IMAGE_NAME: epscavalcante/nestjs-example
     
 jobs:
   setup:
